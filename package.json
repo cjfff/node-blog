@@ -2,7 +2,7 @@
   "name": "node-blog",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "bin/www.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "cross-env NODE_ENV=dev nodemon ./bin/www.js",
@@ -10,5 +10,8 @@
   },
   "keywords": [],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "cross-env": "^5.2.0"
+  }
 }
