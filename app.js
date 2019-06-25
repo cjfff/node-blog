@@ -8,7 +8,7 @@ const handleUserRouter = require("./src/router/user");
 const getPostData = req => {
   return new Promise((resolve, reject) => {
     if (req.method !== "POST") {
-      rsolve({});
+      resolve({});
       return;
     }
 
