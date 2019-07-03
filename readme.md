@@ -12,6 +12,14 @@
   lastmodifiytime,
 }
 ```
+column|datatype|pk 主键|不为空|自动增加|Default|
+--|--|--|--|--|--|
+id|int|Y|Y|Y|
+title|varchar(50)||Y||
+content|longtext||Y||
+createtime|bigint(20)||Y|||
+author|varchar(20)||Y|||
+lastmodify|bigint(20)||Y||
 
 ```js
 用户
@@ -25,6 +33,16 @@
 }
 ```
 
+- 创建 `users` 表
+
+column|datatype|pk主键|不为空|自动增加|Default
+--|--|--|--|--|--|
+id|int|Y|Y|Y||
+username|varchar(20)||Y|
+password|varchar(20)||Y|
+realname|varchar(20)||Y|
+nikename|varchar(20)|||
+email|varchar(20)||||
 
 ## 接口设计 resetful 风格
 描述|接口|方法|url参数|备注
