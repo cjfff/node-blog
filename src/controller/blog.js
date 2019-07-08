@@ -1,21 +1,19 @@
+const { exec } = require("../db/mysql");
+
 const getList = (author, keyword) => {
-  // 假数据
-  return [
-    {
-      id: 1,
-      title: "标题A",
-      content: "内容A",
-      createTime: 1561392728744,
-      author: "zhangsan"
-    },
-    {
-      id: 2,
-      title: "标题B",
-      content: "内容B",
-      createTime: 1561392728744,
-      author: "lisi"
-    }
-  ];
+  let sql = `select id, title, content,author, createtime, lastmodify from blogs where 1=1 `;
+
+  if (author) {
+    sql += `and author='${author}' `;
+  }
+
+  if (keyword) {
+    sql += `and title like '%${keyword}%' `;
+  }
+
+  sql += `order by createtime desc;`;
+
+  return exec(sql)
 };
 
 const getDetail = id => {
@@ -37,15 +35,14 @@ const newBlog = (blogData = {}) => {
 };
 
 const updateBlog = (id, blogData = {}) => {
-  console.log(id, blogData)
+  console.log(id, blogData);
   return true;
 };
 
-
-const delBlog = (id) => {
+const delBlog = id => {
   // 要删除博客的 id
-  return true
-}
+  return true;
+};
 
 module.exports = {
   getList,

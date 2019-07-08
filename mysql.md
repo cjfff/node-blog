@@ -65,7 +65,42 @@ insert into users (username, `password`, realname) values ('zhangsan', '123', '�
 ALTER TABLE users(表)
 	ADD COLUMN `state` TINYINT(2) NOT NULL DEFAULT 1;
 
-## 1075 要求使用安全的更新方法
+
+## 原生 node 操作数据库
+- 首先安装 mysql 库
+```js
+const mysql = require("mysql");
+
+// 创建连接对象
+let con = mysql.createConnection({
+  host: "localhost",
+  user: "root",
+  password: "********",
+  port: "3306",
+  database: "myblog"
+});
+
+
+// 开始连接
+con.connect()
+
+// 执行 sql 语句
+const sql = 'select * from users;'
+con.query(sql, (err, result) => {
+  if (err) {
+    console.error(err)
+    return
+  }
+  console.log(result);
+})
+
+// 关闭连接
+con.end()
+```
+
+## 错误码解决
+
+### 1075 要求使用安全的更新方法
 - SET SQL_SAFE_UPDATES=0;
 
 ### 1366 解决方法

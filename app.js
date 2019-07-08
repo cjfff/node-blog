@@ -1,4 +1,3 @@
-const http = require("http");
 const querystring = require("querystring");
 
 const handleBlogRouter = require("./src/router/blog");
@@ -37,15 +36,28 @@ const serverHandle = (req, res) => {
   req.query = querystring.parse(url.split("?")[1]);
 
   // 处理 postData
-  getPostData(req).then(postData => {
+  getPostData(req).then(async postData => {
     req.body = postData;
-    // 处理 blog 路由
 
-    const blogData = handleBlogRouter(req, res);
-    if (blogData) {
-      res.end(JSON.stringify(blogData));
+    // 处理 blog 路由
+    const blogPromise = handleBlogRouter(req, res);
+    if (blogPromise) {
+      blogPromise.then((blogData) => {
+        res.end(JSON.stringify(blogData));
+      })
       return;
     }
+
+    // handleBlogRouter(req, res).then(blogData => {
+    //   res.end(JSON.stringify(blogData));
+    //   return;
+    // });
+
+    // const blogData = await handleBlogRouter(req, res);
+    // if (blogData) {
+    //   res.end(JSON.stringify(blogData));
+    //   return;
+    // }
 
     // 处理 user 路由
     const userData = handleUserRouter(req, res);
