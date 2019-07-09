@@ -32,8 +32,21 @@ const getPostData = req => {
 const serverHandle = (req, res) => {
   res.setHeader("Content-type", "application/json");
   const { url } = req;
+
+  // 获取 path
   req.path = url.split("?")[0];
+  // 解析 query
   req.query = querystring.parse(url.split("?")[1]);
+
+  // 解析 cookie
+  req.cookie = {};
+  const cookieStr = req.headers.cookie || ""; // k=v
+  cookieStr.split(";").forEach(item => {
+    if (!item) return;
+    const [k, v] = item.split("=");
+    req.cookie[k.trim()] = v;
+  });
+
 
   // 处理 postData
   getPostData(req).then(async postData => {
@@ -41,6 +54,7 @@ const serverHandle = (req, res) => {
 
     // 处理 blog 路由
     const blogPromise = handleBlogRouter(req, res);
+
     if (blogPromise) {
       blogPromise.then(blogData => {
         res.end(JSON.stringify(blogData));
