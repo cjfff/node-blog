@@ -8,13 +8,11 @@ const handleUserRouter = (req, res) => {
   if (method === "POST" && req.path === "/api/user/login") {
     const { username, password } = req.body;
 
-    const result = login(username, password);
-
-    if (result) {
-      return new SuccessModel(result, "登录成功");
-    } else {
-      return new ErrorModel(result, "用户名或密码错误");
-    }
+    return login(username, password).then(data => {
+      console.log(data)
+        ? new SuccessModel(data, "登录成功")
+        : new ErrorModel({}, "用户名或密码错误");
+    });
   }
 };
 

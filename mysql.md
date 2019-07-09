@@ -56,6 +56,7 @@ insert into users (username, `password`, realname) values ('zhangsan', '123', '�
 
 ### 更改
 - update users set realname='李四2' where username='lisi';
+- update users set realname='李四2', title=111 where username='lisi';
 - update users set state=0 where state=1;
 
 ### 删除
