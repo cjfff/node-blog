@@ -42,9 +42,9 @@ const serverHandle = (req, res) => {
     // 处理 blog 路由
     const blogPromise = handleBlogRouter(req, res);
     if (blogPromise) {
-      blogPromise.then((blogData) => {
+      blogPromise.then(blogData => {
         res.end(JSON.stringify(blogData));
-      })
+      });
       return;
     }
 
@@ -60,9 +60,11 @@ const serverHandle = (req, res) => {
     // }
 
     // 处理 user 路由
-    const userData = handleUserRouter(req, res);
-    if (userData) {
-      res.end(JSON.stringify(userData));
+    const userPromise = handleUserRouter(req, res);
+    if (userPromise) {
+      userPromise.then(userData => {
+        res.end(JSON.stringify(userData));
+      });
       return;
     }
 
