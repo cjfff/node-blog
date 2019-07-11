@@ -1,4 +1,6 @@
 const { login } = require("../controller/user");
+const redis = require("../db/redis");
+
 const { SuccessModel, ErrorModel } = require("../model/resModel");
 
 const handleUserRouter = (req, res) => {
@@ -13,8 +15,10 @@ const handleUserRouter = (req, res) => {
       if (data.username) {
         req.session.username = data.username;
         req.session.realname = data.realname;
+
+        redis.set(req.sessionId, req.session);
       }
-      console.log(req.session);
+
       return data.username
         ? new SuccessModel(data, "登录成功")
         : new ErrorModel("用户名或密码错误");
@@ -22,7 +26,6 @@ const handleUserRouter = (req, res) => {
   }
 
   if (method === "GET" && req.path === "/api/user/login-test") {
-    console.log(req.session);
     return Promise.resolve(
       req.session.username
         ? new SuccessModel(
