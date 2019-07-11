@@ -106,6 +106,67 @@ res.setHeader("Set-Cookie", `username=${data.username}; path=/; httpOnly`); // �
 document.cookie // 前端获取 cookie 
 ```
 
+#### 问题
+
+- cookie 不安全，所以不能存放敏感信息，比如用户信息等。
+
 ### session
+
+在客户端 用 键值对存着 用户的信息，比如 token 存在 cookie 里面，用户每次访问都会带上 token
+
+然后在对应的当次请求把存起来的用户信息用 token 取出。
+
+cookie 存储 userid(token), server 端 对应的用户信息
+
+#### 问题
+
+- 目前 session 直接是 js 变量，放在 node.js 进程内存中。
+- 进程内存有限，访问量过大，内存暴增会导致卡死。
+- 正式线上运行是多进程的，进程之间内存无法共享。
+
+### redis
+- 解决多进程之间的通信，常用缓存数据放在内存中。
+- 相比于 mysql，访问速度快（内存和硬盘不是一个数量级的）
+- 成本高，可存储的数量级更小（内存的硬伤）  
+
+- [安装](https://www.runoob.com/redis/redis-install.html)
+- 启动服务端 redis-server.exe redis.window.conf
+- 客户端 redis-cli -h  127.0.0.1 -p 6379
+- 链接 redis-server.exe redis.windows.conf
+- 使用 set myKey abc, get Mykey
+
+
+#### demo
+```js
+const redis = require('redis')
+
+// 创建客户端
+const redisClient = redis.createClient(6379, '127.0.0.1')
+redisClient.on('error', err => {
+  console.log(err)
+})
+
+// 测试
+redisClient.set('myname', 'zhangsan2', redis.print)
+redisClient.get('myname', (err, val) => {
+  if (err) {
+    console.log(err)
+    return
+  }
+
+  console.log('val', val)
+
+  // 退出
+  redisClient.quit()
+})
+```
+
+#### 总结
+- 为何使用 redis ？ 不用 redis 会出现什么问题？
+多进程之间无法共享 session 数据。
+
+- redis 适合什么场景？mysql 适合什么场景？
+redis 适合于频繁存取的数据读写，mysql 适合不常改动的大体量数据。
+
 
 ### 开发登录功能，前端联调（用到 nginx 反向代理）
