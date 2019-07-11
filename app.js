@@ -1,5 +1,5 @@
 const querystring = require("querystring");
-
+const redis = require("./src/db/redis");
 const handleBlogRouter = require("./src/router/blog");
 const handleUserRouter = require("./src/router/user");
 
@@ -68,17 +68,40 @@ const serverHandle = (req, res) => {
   let userId = req.cookie.userId,
     needSetCookie = false;
 
-  if (userId) {
-    if (!SESSION_STORE[userId]) {
-      SESSION_STORE[userId] = {};
-    }
-  } else {
+  if (!userId) {
     needSetCookie = true;
     userId = (Date.now() + Math.random()).toString(16);
-    SESSION_STORE[userId] = {};
+    // 初始化 session
+    redis.set(userId, {});
   }
 
-  req.session = SESSION_STORE[userId];
+  // 获取session
+  req.sessionId = userId;
+  redis.get(req.sessionId).then(sessionData => {
+    if (!sessionData) {
+      // 初始化
+      redis.set(req.sessionId, {});
+      // 设置 session
+      req.session = {};
+    } else {
+      req.session = sessionData;
+    }
+  });
+
+  // if (userId) {
+  //   if (!SESSION_STORE[userId]) {
+  //     SESSION_STORE[userId] = {};
+  //   }
+  // } else {
+  //   needSetCookie = true;
+  //   userId = (Date.now() + Math.random()).toString(16);
+  //   SESSION_STORE[userId] = {};
+  // }
+
+  redis.get(userId).then(val => {
+    req.session = val;
+  });
+  // req.session = SESSION_STORE[userId];
 
   // 处理 postData
   getPostData(req).then(async postData => {
