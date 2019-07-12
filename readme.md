@@ -169,4 +169,12 @@ redisClient.get('myname', (err, val) => {
 redis 适合于频繁存取的数据读写，mysql 适合不常改动的大体量数据。
 
 
-### 开发登录功能，前端联调（用到 nginx 反向代理）
+### nginx
+- 高性能的 web 服务器
+- 用来做静态服务、负载均衡
+- 反向代理
+
+#### 基本使用
+- nginx -t 检查配制文件是否出错
+- nginx 启动、 nginx -s reload 重启
+- 停止 nginx -s stop

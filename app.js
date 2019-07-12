@@ -26,7 +26,7 @@ const getPostData = req => {
       return;
     }
 
-    if (req.headers["content-type"] !== "application/json") {
+    if (!/application\/json/.test(req.headers["content-type"])) {
       resolve({});
       return;
     }
@@ -38,7 +38,6 @@ const getPostData = req => {
         resolve({});
         return;
       }
-
       resolve(JSON.parse(postData));
     });
   });
@@ -90,7 +89,6 @@ const serverHandle = (req, res) => {
       return getPostData(req);
     })
     .then(async postData => {
-
       req.body = postData;
 
       // 处理 blog 路由
