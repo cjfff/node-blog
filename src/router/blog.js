@@ -16,34 +16,36 @@ function loginCheck(req) {
 
 const handleBlogRouter = (req, res) => {
   const { method } = req;
-  const { id } = req.query;
 
   // 获取博客列表
-  if (method === "GET" && req.path === "/api/blog/list") {
+  if (method === "GET" && req.path === "/api/blog") {
     const { author = "", keyword = "", isAdmin } = req.query;
 
     if (isAdmin) {
       // 管理员界面
       const loginCheckResult = loginCheck(req);
-  
+
       if (loginCheckResult) {
         // 未登录
         return loginCheckResult;
       }
 
-      author = req.session.username
+      author = req.session.username;
     }
-    
+
     return getList(author, keyword).then(data => new SuccessModel(data));
   }
 
+  const blogRegExp = /api\/blog\/(?<id>.*)/;
+  const { id } = req.path.match(blogRegExp).groups;
+
   // 获取博客详情
-  if (method === "GET" && req.path === "/api/blog/detail") {
+  if (method === "GET" && blogRegExp.test(req.path)) {
     return getDetail(id).then(data => new SuccessModel(data, "success"));
   }
 
   // 新建博客
-  if (method === "POST" && req.path === "/api/blog/new") {
+  if (method === "POST" && blogRegExp.test(req.path)) {
     const loginCheckResult = loginCheck(req);
 
     if (loginCheckResult) {
@@ -58,7 +60,7 @@ const handleBlogRouter = (req, res) => {
   }
 
   // 更新
-  if (method === "POST" && req.path === "/api/blog/update") {
+  if (method === "POST" && req.path === blogRegExp.test(req.path)) {
     const loginCheckResult = loginCheck(req);
 
     if (loginCheckResult) {
@@ -73,7 +75,7 @@ const handleBlogRouter = (req, res) => {
     );
   }
   // 获取博客列表
-  if (method === "POST" && req.path === "/api/blog/del") {
+  if (method === "POST" && req.path === blogRegExp.test(req.path)) {
     const loginCheckResult = loginCheck(req);
 
     if (loginCheckResult) {
