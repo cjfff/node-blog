@@ -1,10 +1,10 @@
 import Vue from "vue";
 import Router from "vue-router";
-import Home from "./views/Home.vue";
+import Home from "./layouts/home";
 
 Vue.use(Router);
 
-export default new Router({
+const router = new Router({
   routes: [
     {
       path: "/",
@@ -19,6 +19,37 @@ export default new Router({
       // which is lazy-loaded when the route is visited.
       component: () =>
         import(/* webpackChunkName: "about" */ "./views/About.vue")
+    },
+    {
+      path: "/login",
+      name: "login",
+      component: () => import("@/views/login")
+    },
+    {
+      path: "/article",
+      name: "article",
+      component: Home,
+      children: [
+        {
+          path: "/",
+          name: "article-list",
+          component: () => import("@/views/articles")
+        },
+        {
+          path: ":id",
+          name: "article-detail",
+          component: () => import("@/views/articles/id"),
+          props: route => ({
+            id: route.params.id
+          })
+        }
+      ]
     }
   ]
 });
+
+router.beforeEach((to, from, next) => {
+  next();
+});
+
+export default router;

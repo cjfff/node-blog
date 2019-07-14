@@ -1,13 +1,14 @@
 import Vue from "vue";
 import App from "./App.vue";
 import router from "./router";
-import store from "./store";
-import ElementUI from 'element-ui'
-import FormRender from '@femessage/el-form-renderer'
-import './styles.scss'
+import store from "./store/index.js";
+import ElementUI from "element-ui";
+import FormRender from "@femessage/el-form-renderer";
+
+import "@/assets/style/index.scss";
 
 // 引入 axios
-import '@/http'
+import "@/http";
 
 Vue.use(ElementUI);
 Vue.component(FormRender.name, FormRender);

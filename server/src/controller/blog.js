@@ -1,7 +1,7 @@
 const { exec } = require("../db/mysql");
 
 const getList = (author, keyword) => {
-  let sql = `select id, title, content,author, createtime, lastmodify from blogs where 1=1 `;
+  let sql = `select id, title, content,author, createtime, lastmodify, views, description from blogs where 1=1 `;
 
   if (author) {
     sql += `and author='${author}' `;
@@ -17,7 +17,7 @@ const getList = (author, keyword) => {
 };
 
 const getDetail = id => {
-  let sql = `select id, title, content,author, createtime, lastmodify from blogs where id=${id}; `;
+  let sql = `select id, title, content,author, createtime, lastmodify,views, description from blogs where id=${id}; `;
   return exec(sql).then(rows => rows[0]);
 };
 

@@ -9,8 +9,7 @@ const handleUserRouter = (req, res) => {
   // 登录
   if (method === "POST" && req.path === "/api/user/login") {
     const { username, password } = req.body;
-    // const { username, password } = req.query;
-    console.log(username, password)
+
     return login(username, password).then(data => {
       if (data.username) {
         req.session.username = data.username;
@@ -25,7 +24,20 @@ const handleUserRouter = (req, res) => {
     });
   }
 
-  if (method === "GET" && req.path === "/api/user/login-test") {
+  // 退出
+  if (method === "POST" && req.path === "/api/user/logout") {
+    const { username } = req.session;
+
+    if (!username) {
+      return Promise.resolve(new ErrorModel("尚未登录"));
+    }
+
+    redis.set(req.sessionId, {});
+
+    return Promise.resolve(new SuccessModel("退出成功"));
+  }
+
+  if (method === "GET" && req.path === "/api/user/checkLogin") {
     return Promise.resolve(
       req.session.username
         ? new SuccessModel(
@@ -34,7 +46,7 @@ const handleUserRouter = (req, res) => {
             },
             "登录成功"
           )
-        : new ErrorModel("没有登录")
+        : new SuccessModel({}, "没有登录")
     );
   }
 };

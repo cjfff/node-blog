@@ -1,31 +1,31 @@
 class BaseModel {
-  constructor(data, message) {
-    if (typeof data ==='string') {
-      this.message = data;
-      data = null
-      message = null
+  constructor(payload, msg) {
+    if (typeof payload ==='string') {
+      this.msg = payload;
+      payload = null
+      msg = null
     }
-    if (data) {
-      this.data = data
+    if (payload) {
+      this.payload = payload
     }
-    if (message) {
-      this.message = message
+    if (msg) {
+      this.msg = msg
     }
   }
 }
 
 
 class SuccessModel extends BaseModel {
-  constructor(data, message) {
-    super(data, message)
-    this.errno = 0
+  constructor(payload, msg) {
+    super(payload, msg)
+    this.code = 0
   }
 }
 
 class ErrorModel extends BaseModel {
-  constructor(data, message) {
-    super(data, message)
-    this.errno = -1
+  constructor(payload, msg) {
+    super(payload, msg)
+    this.code = -1;
   }
 }
 

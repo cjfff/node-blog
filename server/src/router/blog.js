@@ -19,7 +19,7 @@ const handleBlogRouter = (req, res) => {
 
   // 获取博客列表
   if (method === "GET" && req.path === "/api/blog") {
-    const { author = "", keyword = "", isAdmin } = req.query;
+    let { author = "", keyword = "", isAdmin } = req.query;
 
     if (isAdmin) {
       // 管理员界面
@@ -37,7 +37,8 @@ const handleBlogRouter = (req, res) => {
   }
 
   const blogRegExp = /api\/blog\/(?<id>.*)/;
-  const { id } = req.path.match(blogRegExp).groups;
+  const matched = req.path.match(blogRegExp);
+  const { id } = matched ? matched.groups : {};
 
   // 获取博客详情
   if (method === "GET" && blogRegExp.test(req.path)) {
