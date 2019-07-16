@@ -12,27 +12,30 @@ create table xxx {
 }
 
 ```mysql
-CREATE TABLE `myblog`.`users` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `username` VARCHAR(20) CHARACTER SET utf8 NOT NULL,
-  `password` VARCHAR(20) CHARACTER SET utf8 NOT NULL,
-  `realname` VARCHAR(20) CHARACTER SET utf8 NULL,
-  `nikename` VARCHAR(20) NULL,
-  `email` VARCHAR(20) CHARACTER SET utf8 NULL,
-  PRIMARY KEY (`id`));
+CREATE TABLE `users` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `username` varchar(20) NOT NULL,
+  `password` varchar(20) NOT NULL,
+  `realname` varchar(20) DEFAULT NULL,
+  `nikename` varchar(20) DEFAULT NULL,
+  `email` varchar(20) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 ```
 
 
 ```mysql
-CREATE TABLE `myblog`.`blogs` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `title` VARCHAR(50) NOT NULL,
-  `content` LONGTEXT NULL,
-  `createtime` BIGINT(20) NOT NULL,
-  `author` VARCHAR(20) NOT NULL,
-  `lastmodify` BIGINT(20) NULL,
-  PRIMARY KEY (`id`));
-
+CREATE TABLE `blogs` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `title` varchar(50) NOT NULL,
+  `content` longtext,
+  `createtime` bigint(20) NOT NULL,
+  `author` varchar(20) NOT NULL,
+  `lastmodify` bigint(20) DEFAULT NULL,
+  `description` varchar(255) DEFAULT NULL COMMENT '描述',
+  `views` bigint(20) DEFAULT NULL COMMENT '文章点击数',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 ```
 
 - use myblog(使用某个数据库)
