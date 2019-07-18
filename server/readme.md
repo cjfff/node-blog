@@ -178,3 +178,32 @@ redis 适合于频繁存取的数据读写，mysql 适合不常改动的大体�
 - nginx -t 检查配制文件是否出错
 - nginx 启动、 nginx -s reload 重启
 - 停止 nginx -s stop
+
+
+### 日志
+- 访问日志
+
+- node js 文件操作，nodejs stream
+- 日志功能开发和使用
+- 日志文件拆分，日志内容分析
+
+
+- 日志要存储到文件中
+
+- 为何不存储在 mysql 中？
+
+对性能要求不高, 方便迁移，所有服务器都识别文件类型，不需要环境支持
+
+- 为何不存在 redis 中？
+
+体量大，内存成本高。
+
+
+### IO 操作的性能瓶颈
+- IO 包括 网络 IO 文件 IO
+- 相比于 CPU 计算和内存读写，IO 是很慢的
+
+### stream
+- 标准的输入输出 pipe 就是管道，符合流的模型
+- process.stdin.pipe(process.stdout)
+- 例子可以参考 客户端向服务端发送 post data 的时候，是一点点接收的。
