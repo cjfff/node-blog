@@ -3,7 +3,7 @@ const path = require("path");
 
 // 写日志
 function writeLog(writeStream, log) {
-  writeStream.write(log, "\n"); // 关键代码
+  writeStream.write(log + "\n"); // 关键代码
 }
 
 // create write Stream
@@ -12,18 +12,23 @@ function createWriteStream(fileName) {
 
   const witeSream = fs.createWriteStream(fullFileName, {
     flags: "a",
-    encoding: 'utf8'
+    encoding: "utf8"
   });
   return witeSream;
 }
 
-// 写入访问日志
-const accessWriteStream = createWriteStream("access.log");
+const access = (function() {
+  return log => {
+    if (process.env.NODE_ENV === "dev") {
+      return console.log(log);
+    } else {
+      // 写入访问日志
+      const accessWriteStream = createWriteStream("access.log");
 
-function access(log) {
-  console.log(log)
-  writeLog(accessWriteStream, log);
-}
+      return writeLog(accessWriteStream, log);
+    }
+  };
+})();
 
 module.exports = {
   access
