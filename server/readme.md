@@ -198,6 +198,24 @@ redis 适合于频繁存取的数据读写，mysql 适合不常改动的大体�
 
 体量大，内存成本高。
 
+#### 设计
+- 按时间划分 如 2019-02-10.access.log, 以访问量递推，小时，分钟单位
+- 实现方式 linux crontab 命令，即定时任务
+- 设置定时任务 每天特定时间把 access.log 拷贝并重命名为 2019-07-20.access.log, 并清空原来的文件，继续积累日志
+
+格式 ***** command 指脚本
+
+1. 1**** 每一分钟执行一次  -- 分钟
+2. *1**** 每天的第一个小时执行 -- 小时 
+3. 第三个 * 号 代表日期，即每个月多小号
+4. 第四个 月份
+5. 第五个 星期
+
+例子 
+-  21*** 每天的第一个小时2分钟执行
+- crontab -e 编辑定时任务
+
+[具体学习地址](https://linuxtools-rst.readthedocs.io/zh_CN/latest/tool/crontab.html)
 
 ### IO 操作的性能瓶颈
 - IO 包括 网络 IO 文件 IO
@@ -207,3 +225,12 @@ redis 适合于频繁存取的数据读写，mysql 适合不常改动的大体�
 - 标准的输入输出 pipe 就是管道，符合流的模型
 - process.stdin.pipe(process.stdout)
 - 例子可以参考 客户端向服务端发送 post data 的时候，是一点点接收的。
+
+
+
+### 安全
+- sql 注入：窃取数据库内容
+  - 攻击方式：输入一个 sql 片段，最终拼成一段攻击代码 例如 select * from user where username='zhangsan'-- ', 即用户名输入是 zhangsan'--
+  - 预防措施：使用 mysql 的 escape 函数处理输入内容即可
+- XSS 攻击：窃取前端的 cookie 内容
+- 密码加密： 保障用户信息安全
