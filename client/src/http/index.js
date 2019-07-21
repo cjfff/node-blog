@@ -51,10 +51,9 @@ axios.interceptors.response.use(
     return res;
   },
   error => {
-    return Promise.resolve(error.response);
+    return Promise.reject(error.response);
   }
 );
-
 axiosExtra(axios);
 
 export default axios;

@@ -75,11 +75,11 @@ export default {
           });
         },
         login: () => this.$router.push("/login"),
-        logout: () => this.logout()
+        logout: () => this.logout(),
+        publish: () => this.$router.push('/publish')
       };
       const fn = handleMap[type];
       fn && fn();
-      console.log(type);
     }
   }
 };

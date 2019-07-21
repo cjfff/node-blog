@@ -44,6 +44,17 @@ const router = new Router({
           })
         }
       ]
+    },
+    {
+      path: '/publish',
+      name: 'publish',
+      component: Home,
+      children: [
+        {
+          path: '/',
+          component: () => import('@/views/publish')
+        }
+      ]
     }
   ]
 });

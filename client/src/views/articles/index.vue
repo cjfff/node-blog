@@ -7,7 +7,7 @@
         :key="item.id"
         @click="handleClickAritcle(item)"
       >
-        <div class="article-title">{{item.title}}</div>
+        <div class="article-title" v-html="item.title"></div>
         <div class="article-desc">{{item.description}}</div>
         <div class="article-bottom-container">
           <span class="views">
