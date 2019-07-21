@@ -40,13 +40,9 @@ const handleBlogRouter = (req, res) => {
   const matched = req.path.match(blogRegExp);
   const { id } = matched ? matched.groups : {};
 
-  // 获取博客详情
-  if (method === "GET" && blogRegExp.test(req.path)) {
-    return getDetail(id).then(data => new SuccessModel(data, "success"));
-  }
-
+  
   // 新建博客
-  if (method === "POST" && blogRegExp.test(req.path)) {
+  if (method === "POST" && req.path === "/api/blog") {
     const loginCheckResult = loginCheck(req);
 
     if (loginCheckResult) {
@@ -59,6 +55,12 @@ const handleBlogRouter = (req, res) => {
       data => new SuccessModel({ id: data.insertId }, "新建成功")
     );
   }
+
+  // 获取博客详情
+  if (method === "GET" && blogRegExp.test(req.path)) {
+    return getDetail(id).then(data => new SuccessModel(data, "success"));
+  }
+
 
   // 更新
   if (method === "POST" && req.path === blogRegExp.test(req.path)) {
