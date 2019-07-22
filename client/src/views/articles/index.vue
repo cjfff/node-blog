@@ -1,20 +1,21 @@
 <template>
   <div class="articles-page">
-    <div class="article-list">
-      <div
-        class="article-card"
-        v-for="item in articles"
-        :key="item.id"
-        @click="handleClickAritcle(item)"
-      >
+    <div class="article-list" v-loading="loading">
+      <div class="article-card" v-for="item in articles" :key="item.id">
         <div class="article-title" v-html="item.title"></div>
         <div class="article-desc">{{item.description}}</div>
         <div class="article-bottom-container">
-          <span class="views">
-            <i class="el-icon-view"></i>
-            {{item.views || 0}}
-          </span>
-          <span>{{ item.lastmodify | timeFormat }}</span>
+          <div class="left">
+            <span class="views">
+              <i class="el-icon-view"></i>
+              {{item.views || 0}}
+            </span>
+            <span>{{ item.lastmodify | timeFormat }}</span>
+          </div>
+          <div class="right">
+            <el-button type="text" @click="handleClickAritcle(item)">查看</el-button>
+            <el-button v-if="isAdmin" type="text" @click="handleDelete(item)">删除</el-button>
+          </div>
         </div>
       </div>
     </div>
@@ -30,7 +31,8 @@ export default {
   name: "ArticleList",
   data() {
     return {
-      articles: []
+      articles: [],
+      loading: false
     };
   },
   filters: {
@@ -38,16 +40,29 @@ export default {
       return dayjs(time).format("YYYY-MM-DD HH:mm:ss");
     }
   },
-  mounted() {
-    const params = {};
-    if (this.$route.query.isAdmin) {
-      params.isAdmin = 1;
+  computed: {
+    isAdmin() {
+      return this.$route.query.isAdmin;
     }
-    getBlogList(params).then(({ payload }) => {
-      this.articles = payload || [];
-    });
+  },
+  mounted() {
+    this.getBlogList();
   },
   methods: {
+    getBlogList() {
+      const params = {};
+      if (this.$route.query.isAdmin) {
+        params.isAdmin = 1;
+      }
+      this.loading = true;
+      getBlogList(params)
+        .then(({ payload }) => {
+          this.articles = payload || [];
+        })
+        .finally(() => {
+          this.loading = false;
+        });
+    },
     handleClickAritcle(item) {
       this.$router.push({
         name: "article-detail",
@@ -55,6 +70,14 @@ export default {
           id: item.id
         }
       });
+    },
+    handleDelete(item) {
+      this.$confirm("确定要删除这篇文章吗？", "提示").then(() => {
+        this.$api.deleteBlog(item.id).then(() => {
+          this.$message.success("删除成功");
+          this.getBlogList();
+        });
+      }).catch(() => {})
     }
   }
 };
@@ -90,6 +113,9 @@ export default {
     font-size: 13px;
     color: #555;
     line-height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
     > span {
       display: inline-block;
       margin-right: 10px;

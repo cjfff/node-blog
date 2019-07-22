@@ -15,7 +15,7 @@ create table xxx {
 CREATE TABLE `users` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `username` varchar(20) NOT NULL,
-  `password` varchar(20) NOT NULL,
+  `password` varchar(32) NOT NULL,
   `realname` varchar(20) DEFAULT NULL,
   `nikename` varchar(20) DEFAULT NULL,
   `email` varchar(20) DEFAULT NULL,
@@ -27,7 +27,7 @@ CREATE TABLE `users` (
 ```mysql
 CREATE TABLE `blogs` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `title` varchar(50) NOT NULL,
+  `title` varchar(250) NOT NULL,
   `content` longtext,
   `createtime` bigint(20) NOT NULL,
   `author` varchar(20) NOT NULL,
@@ -35,7 +35,7 @@ CREATE TABLE `blogs` (
   `description` varchar(255) DEFAULT NULL COMMENT '描述',
   `views` bigint(20) DEFAULT NULL COMMENT '文章点击数',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
 ```
 
 - use myblog(使用某个数据库)

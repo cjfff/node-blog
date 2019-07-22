@@ -15,3 +15,5 @@ export const getBlogList = params => axios.$get("/api/blog", { params });
 export const getBlogDetail = id => axios.$get(`/api/blog/${id}`);
 
 export const postBlog = params => axios.$post("/api/blog", params);
+
+export const deleteBlog = id => axios.$delete(`/api/blog/${id}`);

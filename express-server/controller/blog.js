@@ -33,7 +33,7 @@ const newBlog = (blogData = {}) => {
   return exec(sql);
 };
 
-const updateBlog = async (id, blogData = {}) => {
+const updateBlog = (id, blogData = {}) => {
   const { title, content } = blogData,
     date = Date.now();
   let sql = `
