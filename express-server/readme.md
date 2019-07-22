@@ -104,3 +104,10 @@ const RedisStore = require('connect-redis')(session)
 ### 日志
 
 使用 [morgan](https://github.com/expressjs/morgan) 三方插件
+
+
+### express 中间件原理
+
+- app.use 注册中间件，收集 cb
+- 遇到 http 请求，根据 path 和 method 判断触发哪些
+- 实现 next 机制
