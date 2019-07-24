@@ -58,7 +58,6 @@ export default {
         const value = this.$form.getFormValue();
 
         this.$api.postBlog(value).then((res) => {
-          console.log(res, 'sdklfsdfjsdklfjksldjfsdjlfsdlfsldl')
           this.$message.success("发布成功");
           setTimeout(() => {
             this.$router.push('/article/?isAdmin=1')

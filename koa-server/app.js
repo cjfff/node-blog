@@ -8,9 +8,12 @@ const bodyparser = require("koa-bodyparser");
 const logger = require("koa-logger");
 const session = require("koa-generic-session");
 const redisSession = require("koa-redis");
+const resMiddleware = require('./middware/resMiddleware')
+const path = require('path')
+const fs = require('fs')
+const morgan = require('koa-morgan')
 
-const index = require("./routes/index");
-const users = require("./routes/users");
+
 const blog = require("./routes/blog");
 const user = require("./routes/user");
 
@@ -25,6 +28,7 @@ app.use(
     enableTypes: ["json", "form", "text"]
   })
 );
+app.use(resMiddleware());
 app.use(json());
 app.use(logger());
 app.use(require("koa-static")(__dirname + "/public"));
@@ -43,6 +47,20 @@ app.use(async (ctx, next) => {
   console.log(`${ctx.method} ${ctx.url} - ${ms}ms`);
 });
 
+if (process.env.NODE_ENV !== "dev") {
+  const fileName = path.join(__dirname, "logs", "access.log");
+  const writeStream = fs.createWriteStream(fileName, {
+    flags: "a"
+  });
+  app.use(
+    morgan("combined", {
+      stream: writeStream
+    })
+  );
+} else {
+  app.use(morgan("dev"));
+}
+
 app.keys = ["cjf_2019+#_!"];
 app.use(
   session({
@@ -59,9 +77,6 @@ app.use(
   })
 );
 
-// routes
-app.use(index.routes(), index.allowedMethods());
-app.use(users.routes(), users.allowedMethods());
 app.use(blog.routes(), blog.allowedMethods());
 app.use(user.routes(), user.allowedMethods());
 

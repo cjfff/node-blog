@@ -29,9 +29,6 @@ if (process.env.NODE_ENV !== "dev") {
 } else {
   app.use(logger("dev"));
 }
-// view engine setup
-// app.set("views", path.join(__dirname, "views"));
-// app.set("view engine", "jade");
 
 app.use(resMiddleware());
 app.use(express.json()); // 解析 application/json 获取 post data 中的数据
@@ -51,7 +48,6 @@ app.use(
     }
   })
 );
-// app.use(express.static(path.join(__dirname, 'public'))); // 挂载静态文件
 
 app.use("/api/blog", blogRouter);
 app.use("/api/user", userRouter);
